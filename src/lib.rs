@@ -16,6 +16,7 @@ pub type HentaiResult<T> = Result<T, HentaiError>;
 #[derive(Debug)]
 pub enum HentaiError {
     Network,
+    BadStatusCode,
 
     InvalidBody,
 
@@ -35,6 +36,12 @@ impl Client {
         }
     }
 
+    pub fn new_with_client(client: reqwest::Client) -> Self {
+        Client {
+            client,
+        }
+    }
+
     pub fn get_comic(&self, id: u64) -> HentaiResult<Comic> {
         let url = NHENTAI_BASE
             .join(&format!("g/{}", id))
@@ -47,7 +54,7 @@ impl Client {
             .map_err(|_| HentaiError::Network)?;
 
         if !res.status().is_success() {
-            return Err(HentaiError::Network);
+            return Err(HentaiError::BadStatusCode);
         }
 
         let doc = Document::from_read(res).map_err(|_| HentaiError::InvalidBody)?;
@@ -63,7 +70,7 @@ impl Client {
             .map_err(|_| HentaiError::Network)?;
 
         if !res.status().is_success() {
-            return Err(HentaiError::Network);
+            return Err(HentaiError::BadStatusCode);
         }
 
         let doc = Document::from_read(res).map_err(|_| HentaiError::InvalidBody)?;
