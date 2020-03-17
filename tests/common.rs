@@ -21,10 +21,7 @@ fn get_title() {
 fn it_works_with_proxy() {
     let proxy_addr = std::env::var("PROXY").unwrap();
     let proxy = reqwest::Proxy::all(proxy_addr.as_str()).unwrap();
-    let http_client = reqwest::Client::builder()
-        .proxy(proxy)
-        .build()
-        .unwrap();
+    let http_client = reqwest::Client::builder().proxy(proxy).build().unwrap();
 
     let client = Client::new_with_client(http_client);
     let res = client.get_random().unwrap();
@@ -38,10 +35,7 @@ fn it_works_with_proxy() {
 fn get_title_with_proxy() {
     let proxy_addr = std::env::var("PROXY").unwrap();
     let proxy = reqwest::Proxy::all(proxy_addr.as_str()).unwrap();
-    let http_client = reqwest::Client::builder()
-        .proxy(proxy)
-        .build()
-        .unwrap();
+    let http_client = reqwest::Client::builder().proxy(proxy).build().unwrap();
 
     let client = Client::new_with_client(http_client);
     let res = client.get_random().unwrap();
